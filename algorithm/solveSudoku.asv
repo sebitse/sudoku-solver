@@ -1,0 +1,26 @@
+function matrix = solveSudoku(grid)
+    % Cautam o pozitie necompletata
+    [row, col] = find(grid == 0, 1);
+
+    % Daca matricea este completata, return
+    if isempty(row) & isempty(col)
+        matrix = grid;
+        return;
+    end
+
+    % Cautam numarul ce se potriveste pe pozitia gasita la find
+    for num = 1:9
+        if isSafe(grid, row, col, num)
+            % Verificam daca nr se potriveste
+            grid(row, col) = num;
+            matrix = solveSudoku(grid);
+            if ~isempty(matrix)
+                return;
+            end
+            % If no solution is found, backtrack
+            grid(row, col) = 0;
+        end
+    end
+
+    matrix = [];
+end
