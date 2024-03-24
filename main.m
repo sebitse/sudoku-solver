@@ -1,7 +1,13 @@
 close all;
-clear clc;
+clear;
+clc;
 
 addpath("algorithm\");
+addpath("image_acquisition\");
+
+% Achizitionarea imaginii folosind camera web
+imagine = img_acquisition();
+figure; imshow(imagine);
 
 % Matrice de test
 matrice = [3, 0, 6, 5, 0, 8, 4, 0, 0;
@@ -16,4 +22,4 @@ matrice = [3, 0, 6, 5, 0, 8, 4, 0, 0;
 
 solved_matrix = solveSudoku(matrice);
 
-disp(solved_matrix);
+% disp(solved_matrix);
