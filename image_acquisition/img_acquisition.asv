@@ -1,0 +1,4 @@
+function [imagine] = img_acquisition()
+cam = webcam;
+imagine = snapshot(cam);
+end

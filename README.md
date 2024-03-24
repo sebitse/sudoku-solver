@@ -8,6 +8,6 @@
 3. Run the script:
    ```main.m```
 
-## Tehnical details
+## Technical details
 - For Image Acquisition it is needed to have the toolbox: ```MATLAB Support Package for USB Webcams```.
 - The function ```img_acquisition``` return the image captured by webcam.
