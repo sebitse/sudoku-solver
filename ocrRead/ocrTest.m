@@ -4,15 +4,26 @@ binara=imbinarize(inP);
 ocrO=ocr(inP,"LayoutAnalysis","character");
 
 %% 2 bucati
-
+tic;
 % Specify the folder containing the files
 folderPath = 'F:\WIP\MatrixLab\SVA\Sudokan\input_OCR';
 
 % Get a list of all files in the folder
 fileList = dir(fullfile(folderPath, '*.png')); % Change '*.png' to the appropriate file extension
 
+% Check if there are exactly 81 files in the folder
+if numel(fileList) ~= 81
+    disp('EROARE');
+    return;
+end
+
+
+% Initialize a matrix to store OCR results
+matrice = zeros(9, 9);
+
+
 % Loop through each file
-for i = 1:numel(fileList)
+parfor i = 1:numel(fileList)
     % Get the file name
     fileName = fileList(i).name;
     
@@ -36,6 +47,15 @@ for i = 1:numel(fileList)
     % Get the text from OCR results
     ocrText = ocrResults.Text;
     
-    % Display file name and OCR text in console
-    fprintf('%s : %s\n', fileName, ocrText);
+    % Convert OCR text to numbers
+    if ~isempty(ocrText)
+        matrice(i) = str2double(ocrText);
+    end
 end
+
+% Display the matrix
+disp('Matrice de test:');
+disp(matrice);
+
+elapsedTime = toc;
+fprintf('Execution time: %.2f seconds\n', elapsedTime);
