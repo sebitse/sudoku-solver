@@ -1,13 +1,17 @@
 close all;
 clear;
 clc;
+tic;
 
 addpath("algorithm\");
 addpath("image_acquisition\");
+addpath("game_detect\");
+addpath("ocrRead\");
+addpath("dataset\");
 
 % Achizitionarea imaginii folosind camera web
-imagine = img_acquisition();
-figure; imshow(imagine);
+%imagine = img_acquisition();
+%figure; imshow(imagine);
 
 % Matrice de test
 matrice = [3, 0, 6, 5, 0, 8, 4, 0, 0;
@@ -20,6 +24,59 @@ matrice = [3, 0, 6, 5, 0, 8, 4, 0, 0;
            0, 0, 0, 0, 0, 0, 0, 7, 4;
            0, 0, 5, 2, 0, 6, 3, 0, 0];
 
-solved_matrix = solveSudoku(matrice);
+image = imread("dataset\easy_3.png");
 
-% disp(solved_matrix);
+colturi=find_closest_corners(image);
+
+doarS=crop_sudoku_grid(image, colturi);
+
+inputOCR=extract_sudoku_cells(doarS);
+
+folderPath="input_OCR\";
+
+files = dir(fullfile(folderPath, '*'));
+for i = 1:length(files)
+    if ~files(i).isdir
+        delete(fullfile(folderPath, files(i).name));
+    end
+end
+
+% Iterate over subimages and save them
+for i = 1:9
+    for j = 1:9
+        % Generate filename
+        filename = sprintf('subimage_%d_%d.png', i, j);
+        
+        % Construct full file path
+        fullFilePath = fullfile(folderPath, filename);
+        
+        % Save subimage
+        imwrite(inputOCR{i, j}, fullFilePath);
+    end
+end
+
+% Iterate over subimages and save them
+for i = 1:9
+    for j = 1:9
+        % Generate filename
+        filename = sprintf('subimage_%d_%d.png', i, j);
+        
+        % Construct full file path
+        fullFilePath = fullfile(folderPath, filename);
+        
+        % Save subimage
+        imwrite(inputOCR{i, j}, fullFilePath);
+    end
+end
+
+matrice=folderRead(folderPath);
+
+solved_matrix = solveSudoku(matrice');
+
+disp("Intrare: ");
+disp(matrice');
+disp("Iesire");
+disp(solved_matrix);
+
+elapsedTime = toc;
+fprintf('Execution time: %.2f seconds\n', elapsedTime);
