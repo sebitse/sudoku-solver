@@ -1,7 +1,6 @@
 close all;
 clear;
 clc;
-tic;
 
 addpath("algorithm\");
 addpath("image_acquisition\");
@@ -25,7 +24,7 @@ matrice = [3, 0, 6, 5, 0, 8, 4, 0, 0;
            0, 0, 0, 0, 0, 0, 0, 7, 4;
            0, 0, 5, 2, 0, 6, 3, 0, 0];
 
-image = imread("dataset\easy_3.png");
+image = imread("dataset\easy_1.png");
 
 colturi=find_closest_corners(image);
 
@@ -33,37 +32,60 @@ doarS=crop_sudoku_grid(image, colturi);
 
 inputOCR=extract_sudoku_cells(doarS);
 
-folderPath="input_OCR\";
+% Initialize a matrix to store OCR results
+matrice = zeros(9, 9);
 
-files = dir(fullfile(folderPath, '*'));
-for i = 1:length(files)
-    if ~files(i).isdir
-        delete(fullfile(folderPath, files(i).name));
+ % Get the size of the image
+    [height, width, ~] = size(inputOCR{1,1});
+    
+    % Define the ROI (centered 80% of the image)
+    roiWidth = width * 0.8;
+    roiHeight = height * 0.8;
+    roiX = (width - roiWidth) / 2;
+    roiY = (height - roiHeight) / 2;
+   roi = [roiX, roiY, roiWidth, roiHeight];
+tic;
+
+% Loop through each file
+
+% Flatten the 9x9 cell array into a 81x1 cell array
+inputOCR_flat = inputOCR(:);
+% Initialize an array to store execution times
+execution_times = zeros(numel(inputOCR_flat), 1);
+
+
+% Loop through each cell in parallel
+parfor i = 1:numel(inputOCR_flat)
+    start_time = tic; % Start timer
+    
+    % Perform OCR on the specified region
+    ocrResults = ocr(imbinarize(inputOCR_flat{i}), roi,"LayoutAnalysis","block","CharacterSet","123456789");
+    
+    % Get the text from OCR results
+    ocrText = ocrResults.Text;
+    
+    % Convert OCR text to numbers
+    if ~isempty(ocrText)
+        matrice(i) = str2double(ocrText);
+        %disp(ocrText);
     end
+    
+    % Store execution time
+    execution_times(i) = toc(start_time); % End timer
 end
 
-% Iterate over subimages and save them
-for i = 1:9
-    for j = 1:9
-        % Generate filename
-        filename = sprintf('subimage_%d_%d.png', i, j);
-        
-        % Construct full file path
-        fullFilePath = fullfile(folderPath, filename);
-        
-        % Save subimage
-        imwrite(inputOCR{i, j}, fullFilePath);
-    end
-end
+% Display execution times
+disp("Execution times:");
+disp(sum(execution_times));
 
-matrice=folderRead(folderPath);
+disp("Intrare: ");
+disp(matrice);
 
 solved_matrix = solveSudoku(matrice');
 
-disp("Intrare: ");
-disp(matrice');
+
 disp("Iesire");
-disp(solved_matrix);
+disp(solved_matrix');
 
 elapsedTime = toc;
 fprintf('Execution time: %.2f seconds\n', elapsedTime);
