@@ -10,8 +10,9 @@ addpath("ocrRead\");
 addpath("dataset\");
 
 % Achizitionarea imaginii folosind camera web
-%imagine = img_acquisition();
-%figure; imshow(imagine);
+%image = img_acquisition();
+%figure; 
+% imshow(image);
 
 % Matrice de test
 matrice = [3, 0, 6, 5, 0, 8, 4, 0, 0;
@@ -55,19 +56,6 @@ for i = 1:9
     end
 end
 
-% Iterate over subimages and save them
-for i = 1:9
-    for j = 1:9
-        % Generate filename
-        filename = sprintf('subimage_%d_%d.png', i, j);
-        
-        % Construct full file path
-        fullFilePath = fullfile(folderPath, filename);
-        
-        % Save subimage
-        imwrite(inputOCR{i, j}, fullFilePath);
-    end
-end
 
 matrice=folderRead(folderPath);
 
