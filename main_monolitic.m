@@ -69,7 +69,7 @@ parfor i = 1:numel(inputOCR_flat)
         matrice(i) = str2double(ocrText);
         %disp(ocrText);
     end
-    
+     
     % Store execution time
     execution_times(i) = toc(start_time); % End timer
 end
