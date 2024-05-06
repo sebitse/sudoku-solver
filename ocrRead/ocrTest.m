@@ -6,7 +6,7 @@ ocrO=ocr(inP,"LayoutAnalysis","character");
 %% 2 bucati
 tic;
 % Specify the folder containing the files
-folderPath = 'F:\WIP\MatrixLab\SVA\Sudokan\input_OCR';
+folderPath = 'H:\Other computers\My Laptop\MatrixLab\SVA\Sudokan\input_OCR';
 
 % Get a list of all files in the folder
 fileList = dir(fullfile(folderPath, '*.png')); % Change '*.png' to the appropriate file extension
@@ -42,7 +42,7 @@ parfor i = 1:numel(fileList)
     roi = [roiX, roiY, roiWidth, roiHeight];
     
     % Perform OCR on the specified region
-    ocrResults = ocr(imbinarize(img), roi,"LayoutAnalysis","character","CharacterSet","123456789");
+    ocrResults = ocr(imbinarize(img), roi,"LayoutAnalysis","block","CharacterSet","123456789");
     
     % Get the text from OCR results
     ocrText = ocrResults.Text;

@@ -68,7 +68,7 @@ parfor i = 1:numel(fileList)
     roi = [roiX, roiY, roiWidth, roiHeight];
     
     % Perform OCR on the specified region
-    ocrResults = ocr(imbinarize(img), roi,"LayoutAnalysis","character","CharacterSet","123456789");
+    ocrResults = ocr(imbinarize(img), roi,"LayoutAnalysis","block","CharacterSet","123456789");
     
     % Get the text from OCR results
     ocrText = ocrResults.Text;
