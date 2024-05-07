@@ -29,16 +29,13 @@ function closest_corners = find_closest_corners(image)
     % Step 3: Find corners closest to image corners
     image_size = size(image);
     image_corners = [1, 1; 1, image_size(2); image_size(1), 1; image_size(1), image_size(2)];
+
+    % Compute distances between each corner and image corners
     num_corners = size(corners.Location, 1);
     corner_distances = zeros(num_corners, 4);
 
-    % Compute distances between each corner and image corners
-    for i = 1:num_corners
-        corner = corners.Location(i, :);
-        for j = 1:4
-            distance = norm(corner - image_corners(j, :));
-            corner_distances(i, j) = distance;
-        end
+    for j = 1:4
+        corner_distances(:, j) = sqrt(sum((corners.Location - image_corners(j, :)).^2, 2));
     end
 
     % Find the closest corner to each image corner

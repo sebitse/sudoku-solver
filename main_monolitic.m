@@ -1,36 +1,26 @@
-close all;
-clear;
-clc;
+init();
 
-addpath("algorithm\");
-addpath("image_acquisition\");
-addpath("game_detect\");
-addpath("ocrRead\");
-addpath("dataset\");
+%9w 2t 1,4sec all 
+%0.14 sec unitate
 
 % Achizitionarea imaginii folosind camera web
 %image = img_acquisition();
 %figure; 
 % imshow(image);
 
-% Matrice de test
-matrice = [3, 0, 6, 5, 0, 8, 4, 0, 0;
-           5, 2, 0, 0, 0, 0, 0, 0, 0;
-           0, 8, 7, 0, 0, 0, 0, 3, 1;
-           0, 0, 3, 0, 1, 0, 0, 8, 0;
-           9, 0, 0, 8, 6, 3, 0, 0, 5;
-           0, 5, 0, 0, 9, 0, 6, 0, 0;
-           1, 3, 0, 0, 0, 0, 2, 5, 0;
-           0, 0, 0, 0, 0, 0, 0, 7, 4;
-           0, 0, 5, 2, 0, 6, 3, 0, 0];
 
+% Matrice de test
 image = imread("dataset\easy_1.png");
+
 
 colturi=find_closest_corners(image);
 
+
 doarS=crop_sudoku_grid(image, colturi);
 
+
 inputOCR=extract_sudoku_cells(doarS);
+
 
 % Initialize a matrix to store OCR results
 matrice = zeros(9, 9);
@@ -44,7 +34,7 @@ matrice = zeros(9, 9);
     roiX = (width - roiWidth) / 2;
     roiY = (height - roiHeight) / 2;
    roi = [roiX, roiY, roiWidth, roiHeight];
-tic;
+
 
 % Loop through each file
 
@@ -53,7 +43,7 @@ inputOCR_flat = inputOCR(:);
 % Initialize an array to store execution times
 execution_times = zeros(numel(inputOCR_flat), 1);
 
-
+tic;
 % Loop through each cell in parallel
 parfor i = 1:numel(inputOCR_flat)
     start_time = tic; % Start timer
@@ -73,6 +63,7 @@ parfor i = 1:numel(inputOCR_flat)
     % Store execution time
     execution_times(i) = toc(start_time); % End timer
 end
+elapsedTime = toc;
 
 % Display execution times
 disp("Execution times:");
@@ -81,11 +72,12 @@ disp(sum(execution_times));
 disp("Intrare: ");
 disp(matrice);
 
+
 solved_matrix = solveSudoku(matrice');
 
 
 disp("Iesire");
 disp(solved_matrix');
 
-elapsedTime = toc;
+
 fprintf('Execution time: %.2f seconds\n', elapsedTime);
