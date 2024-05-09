@@ -10,6 +10,7 @@ init();
 
 
 % Matrice de test
+tic;
 image = imread("dataset\easy_1.png");
 
 
@@ -43,7 +44,7 @@ inputOCR_flat = inputOCR(:);
 % Initialize an array to store execution times
 execution_times = zeros(numel(inputOCR_flat), 1);
 
-tic;
+
 % Loop through each cell in parallel
 parfor i = 1:numel(inputOCR_flat)
     start_time = tic; % Start timer
