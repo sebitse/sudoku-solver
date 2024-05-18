@@ -9,5 +9,6 @@
    ```main.m```
 
 ## Technical details
-- For Image Acquisition it is needed to have the toolbox: ```MATLAB Support Package for USB Webcams```.
-- The function ```img_acquisition``` return the image captured by webcam.
+- For Image Acquisition it is needed to have the toolbox: ```MATLAB Support Package for USB Webcams``` and ```MATLAB Support Package for Android Sensors```.
+- The function ```img_acquisition``` return the image captured by mobile phone.
+- To run the ```main.exe``` it is needed to have Matlab Runtime for the specific version.
