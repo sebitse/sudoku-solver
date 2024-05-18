@@ -3,6 +3,12 @@ clear;
 clc;
 tic;
 
+addpath("algorithm\");
+addpath("image_acquisition\");
+addpath("game_detect\");
+addpath("ocrRead\");
+addpath("dataset\");
+
 % Matrice de test
 matrice = [
            0, 5, 1, 0, 0, 0, 0, 7, 0;
