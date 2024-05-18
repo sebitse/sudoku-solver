@@ -77,6 +77,10 @@ parfor i = 1:numel(fileList)
     if ~isempty(ocrText)
         matrice(i) = str2double(ocrText);
     end
+
+    if matrice(i) > 9 || isequal(matrice(i), NaN)
+        matrice(i) = 0;
+    end
 end
 
 end

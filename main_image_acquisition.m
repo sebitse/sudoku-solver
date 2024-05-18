@@ -1,7 +1,4 @@
-close all;
-clear;
-clc;
-tic;
+clear all;
 
 addpath("algorithm\");
 addpath("image_acquisition\");
@@ -9,23 +6,11 @@ addpath("game_detect\");
 addpath("ocrRead\");
 addpath("dataset\");
 
-% Achizitionarea imaginii folosind camera web
-%image = img_acquisition();
-%figure; 
-% imshow(image);
+% Achizitionarea imaginii folosind camera telefonului
+img = img_acquisition();
 
-% Matrice de test
-matrice = [0, 5, 1, 0, 0, 0, 0, 7, 0;
-           0, 7, 3, 0, 4, 2, 8, 9, 5;
-           9, 4, 2, 5, 8, 0, 6, 0, 3;
-           0, 6, 9, 7, 1, 0, 3, 0, 0;
-           0, 0, 0, 8, 2, 9, 7, 4, 6;
-           2, 8, 0, 0, 6, 0, 0, 0, 1;
-           1, 3, 0, 0, 0, 0, 2, 5, 0;
-           0, 0, 0, 0, 0, 0, 0, 7, 4;
-           0, 0, 5, 2, 0, 6, 3, 0, 0];
-
-image = imread("dataset\easy_3.png");
+image = imcrop(img);
+figure; imshow(image );
 
 colturi=find_closest_corners(image);
 
@@ -47,10 +32,10 @@ for i = 1:9
     for j = 1:9
         % Generate filename
         filename = sprintf('subimage_%d_%d.png', i, j);
-        
+
         % Construct full file path
         fullFilePath = fullfile(folderPath, filename);
-        
+
         % Save subimage
         imwrite(inputOCR{i, j}, fullFilePath);
     end
@@ -62,9 +47,6 @@ matrice=folderRead(folderPath);
 solved_matrix = solveSudoku(matrice');
 
 disp("Intrare: ");
-disp(matrice');
+disp(matrice);
 disp("Iesire");
 disp(solved_matrix);
-
-elapsedTime = toc;
-fprintf('Execution time: %.2f seconds\n', elapsedTime);
