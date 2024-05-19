@@ -1,4 +1,4 @@
-clear all;
+clc; clear all;
 
 addpath("algorithm\");
 addpath("image_acquisition\");
@@ -6,11 +6,11 @@ addpath("game_detect\");
 addpath("ocrRead\");
 addpath("dataset\");
 
-% Achizitionarea imaginii folosind camera telefonului
+% Achizitionarea imaginii folosind camera web
 img = img_acquisition();
 
 image = imcrop(img);
-figure; imshow(image );
+% figure; imshow(image );
 
 colturi=find_closest_corners(image);
 
