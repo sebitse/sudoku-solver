@@ -30,8 +30,8 @@ matrice = zeros(9, 9);
     [height, width, ~] = size(inputOCR{1,1});
     
     % Define the ROI (centered 80% of the image)
-    roiWidth = width * 0.8;
-    roiHeight = height * 0.8;
+    roiWidth = width * 0.9;
+    roiHeight = height * 0.9;
     roiX = (width - roiWidth) / 2;
     roiY = (height - roiHeight) / 2;
    roi = [roiX, roiY, roiWidth, roiHeight];
